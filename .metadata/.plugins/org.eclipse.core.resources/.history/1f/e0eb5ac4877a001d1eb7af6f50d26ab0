@@ -1,0 +1,5 @@
+package com.spring.mypro00.mapper;
+
+public interface MyMemberMapper {
+
+}

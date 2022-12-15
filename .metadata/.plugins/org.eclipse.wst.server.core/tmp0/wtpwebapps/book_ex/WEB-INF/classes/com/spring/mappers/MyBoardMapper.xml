@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mappers.MyBoardMapper">
+
+	<select id="selectMyBoardList" 
+			resultType="com.spring.domain.MyBoardVO">
+		SELECT 
+		    *
+		FROM BOOK_EX.TBL_MYBOARD
+	</select>
+	
+	<insert id="insertMyBoard" parameterType="com.spring.domain.MyBoardVO">
+		INSERT INTO book_ex.tbl_myboard
+		VALUES (
+                BOOK_EX.SEQ_BOARD.NEXTVAL,
+				#{btitle},
+				#{bcontent},
+				#{bwriter},
+				DEFAULT,			
+				DEFAULT,			
+				DEFAULT,			
+				DEFAULT,			
+				DEFAULT		
+	        )
+	</insert>
+	
+	<insert id="insertMyBoardSelectKey">
+	
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+			SELECT BOOK_EX.SEQ_BOARD.NEXTVAL FROM DUAL
+ 		</selectKey>
+	
+		INSERT INTO book_ex.tbl_myboard
+		VALUES (
+                #{bno},
+				#{btitle},
+				#{bcontent},
+				#{bwriter},
+				DEFAULT,			
+				DEFAULT,			
+				DEFAULT,			
+				DEFAULT,			
+				DEFAULT		
+	        )
+	</insert>
+		
+	<select id="selectMyBoard" resultType="com.spring.domain.MyBoardVO">
+		SELECT 
+		    *
+		FROM BOOK_EX.TBL_MYBOARD
+		WHERE BNO = #{bno}   
+	</select>
+	
+	
+	<update id="updateBdelFlag">
+		UPDATE BOOK_EX.TBL_MYBOARD
+			SET BDEFLAG = 1
+		WHERE BNO = #{bno}	
+	</update>
+	
+	
+	<delete id="deleteMyBoard">
+		DELETE FROM BOOK_EX.TBL_MYBOARD
+		WHERE BNO = #{bno}
+	</delete>
+	<delete id="deleteAllBoardSetDeleted">
+		DELETE BOOK_EX.TBL_MYBOARD 
+		WHERE bDelFlag = 1
+	</delete>
+	<update id="updateMyBoard">
+		UPDATE BOOK_EX.TBL_MYBOARD
+			SET BTITLE = #{btitle},
+				BCONTENT = #{bcontent},
+				BMODDATE = DEFAULT
+		WHERE BNO = #{bno}
+	</update>
+	<update id="updateBviewsCnt">
+		UPDATE BOOK_EX.TBL_MYBOARD
+			SET BVIEWCNT = BVIEWCNT + 1
+		WHERE BNO = #{bno}
+	</update>
+</mapper>
+
+<!-- public interface MyBoardMapper { -->
+	
+<!-- 	public List<MyBoardVO> selectMyBoardList(); -->
+	
+<!-- 	public int insertMyBoard(MyBoardVO myBoard); -->
+	
+<!-- 	public int insertMyBoardSelectKey(MyBoardVO myBoard); -->
+	
+<!-- 	public MyBoardVO selectMyBoard(long bno); -->
+	
+<!-- 	public int updateBdelFlag(long bno); -->
+	
+<!-- 	public int deleteMyBoard(long bno); -->
+	
+<!-- 	public int deleteAllBoardSetDeleted(long bno); -->
+	
+<!-- 	public int updateMyBoard(MyBoardVO myBoardVO); -->
+	
+<!-- 	public void updateBviewCnt(long bno); -->
+	
+<!-- } -->

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mypro00.mapper.MyMemberMapper">
+
+	<resultMap type="com.spring.mypro00.domain.MyAuthorityVO" id="authMap">
+		<result property="userid" column="userid"/>
+		<result property="authority" column="authority"/>	
+	</resultMap>
+
+	<resultMap type="com.spring.mypro00.domain.MyMemberVO" id="memberMap">
+		<result property="userid" column="userid"/>
+		<result property="userpw" column="userpw"/>
+		<result property="userName" column="username"/>
+		<result property="enabled" column="enabled"/>
+		<result property="mregDate" column="mregdate"/>
+		<result property="mmodDate" column="mmoddate"/>
+		<result property="mdropFlg" column="mdropflg"/>
+		
+		<collection property="authList" resultMap="authMap"/>
+		
+	</resultMap>
+
+	<select id="selectMyMember" resultMap="memberMap">
+	SELECT mem.userid, mem.userpw, mem.username, mem.enabled,
+    	   mem.mregdate, mem.mmoddate, mem.mdropflg, auth.authority
+	FROM book_ex.tbl_mymember mem INNER JOIN book_ex.tbl_mymember_authorities auth 
+    ON mem.userid = auth.userid
+	WHERE mem.userid = #{userid}
+	
+	</select>
+	
+	<!-- 회원 등록: 회원 등록 시 회원 권한 추가도 같이 수행 -->
+	<insert id="insertMyMember">
+		INSERT INTO book_ex.tbl_mymember VALUES (#{userid}, #{userpw}, #{userName}, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+	
+	<!-- 회원 권한 추가 -->
+	<insert id="insertMyMemberAuth">
+		INSERT INTO book_ex.tbl_mymember_authorities VALUES (#{userid} , #{authority})
+	</insert>
+
+
+</mapper>

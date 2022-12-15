@@ -1,0 +1,23 @@
+package com.spring.mypro00.common.security;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import lombok.extern.log4j.Log4j;
+
+@Controller
+@Log4j
+public class MyErrMsgController {
+
+	@GetMapping("/accessForbiddenError")
+	public String callAccessForbiddenPage(Authentication authentication, Model model) {
+		
+		log.info("===============================================");
+		log.info("authentication: " + authentication);
+		model.addAttribute("msg", "접근이 금지됨.");
+		log.info("===============================================");
+		return "common/err_msg/myAccessForbiddenMsg";
+	}
+}

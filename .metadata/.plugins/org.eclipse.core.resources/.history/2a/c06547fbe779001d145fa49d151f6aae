@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+	
+	<!-- Enables the Spring AOP -->
+	<aop:aspectj-autoproxy />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- 
+	<context:component-scan base-package="com.spring.mypro00" /> -->
+	
+	<context:component-scan base-package="com.spring.mypro00.service"/>
+	<context:component-scan base-package="com.spring.mypro00.controller"/>
+	<context:component-scan base-package="com.spring.mypro00.service" />
+	<context:component-scan base-package="com.spring.mypro00.common.fileupload"/>
+	<context:component-scan base-package="com.spring.mypro00.common.filedownload"/>
+	
+	<!-- 
+	<context:component-scan base-package="sample.chap02" /> -->
+	<context:component-scan base-package="sample.chap04.controller" />
+	<context:component-scan base-package="sample.chap04.exception" />
+	<context:component-scan base-package="sample.chap18.aop"/>
+	<context:component-scan base-package="sample.chap18.service"/>
+
+
+            
+   <!-- Servlet-based MultipartResolver implementation for Apache Commons FileUpload 1.2 or above.  --><!-- 
+   <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+       <beans:property name="defaultEncoding" value="utf-8"/>
+       <beans:property name="maxUploadSize" value="104857560"/>
+       <beans:property name="maxUploadSizePerFile" value="2097152"/>
+       <beans:property name="uploadTempDir" value="file:/C:/myupload/temp"/>
+       <beans:property name="maxInMemorySize" value="20971520"/>
+    </beans:bean> -->
+    
+    
+    <!-- 교재 단원6, 톰캣 내장 라이이브러리를 이용한 업로드 -->
+    <!-- JSON 처리시 메시지 컨버터 빈: 실습에서는 사용 않함(스프링 5.1 이 후부터 필요없음)-->
+<!--
+	<beans:bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<beans:property name="supportedMediaTypes">
+						<beans:list>
+							<beans:value>text/html;charset=UTF-8</beans:value>
+							<beans:value>application/json;charset=UTF-8</beans:value>
+						</beans:list>
+					</beans:property>
+				</beans:bean>
+				<beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+-->
+    
+	<beans:bean id="multipartResolver" 
+				class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+	
+
+	
+	
+<!-- 		
+	<beans:bean class="sample.chap02.Chef" id="myChef1">
+		<beans:constructor-arg  value="hong"/>
+		<beans:constructor-arg  value="홍길동" />
+	</beans:bean>
+ 
+	<beans:bean class="sample.chap02.Chef" id="myChef2">
+		<beans:property name="cname" value="슈퍼맨" />
+		<beans:property name="cid" value="superman" />
+	</beans:bean>
+	
+	<beans:bean class="sample.chap02.Restaurant" id="myRestaurant1">
+		<beans:constructor-arg  ref="myChef2" />
+	</beans:bean> 
+	
+	<beans:bean class="sample.chap02.Restaurant" id="myRestaurant2">
+		<beans:property name="chef" ref="myChef1" />
+	</beans:bean> 
+ -->	
+	
+	
+</beans:beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.4.xsd">
+
+	<!-- 사용자 암호 BCrypt 방식 방호화 -->
+	<bean id="bCryptPasswordEncoder" 
+		  class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<!-- 데이터베이스의 사용자 아이디, 암호, 권한 정보리스트 가져와서 userDetail 유형으로 변환 -->	
+	<bean id="myMemberDetailsService" 
+		  class="com.spring.mypro00.common.security.MyMemberDetailsService" />		  
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="myMemberDetailsService">
+			<security:password-encoder ref="bCryptPasswordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<bean id="myLoginSuccessHandler" 
+			  class="com.spring.mypro00.common.security.MyLoginSuccessHandler" />			  
+	<security:http>
+		<!-- 
+		<security:intercept-url pattern="/**" access="permitAll"/> -->
+		
+		<security:intercept-url pattern="/" 
+														access="permitAll"/> 
+		<security:intercept-url pattern="/myboard/list" 
+														access="permitAll" />
+		<security:intercept-url pattern="/myboard/modify" 
+														access="hasRole('ROLE_MANAGER')" />
+		<security:intercept-url pattern="/myboard/register" 
+														access="hasAnyRole('ROLE_MANAGER','ROLE_USER' )" />
+		<security:intercept-url pattern="/myboard/detail" 
+														access="hasRole('ROLE_ADMIN')" />
+		
+		<security:form-login login-page="/login" login-processing-url="/login" 
+												 default-target-url="/myboard/list"
+												 authentication-success-handler-ref="myLoginSuccessHandler" />	
+		
+		<security:logout logout-url="/logout" logout-success-url="/"/>
+		
+		<!-- 스프링 시큐리티: 자동 로그인 1주일 유지  -->
+		<security:remember-me data-source-ref="dataSource" remember-me-cookie="remember-me" remember-me-parameter="remember-me" token-validity-seconds="604800"/>
+		<security:access-denied-handler error-page="/accessForbiddenError"/>
+		
+	</security:http>
+
+
+</beans>

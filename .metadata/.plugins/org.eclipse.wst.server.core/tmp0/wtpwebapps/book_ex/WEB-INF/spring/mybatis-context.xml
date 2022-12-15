@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<!-- <beans xmlns="http://www.springframework.org/schema/beans" -->
+<!-- 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -->
+<!-- 	xmlns:context="http://www.springframework.org/schema/context" -->
+<!-- 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring" -->
+<!-- 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring  -->
+<!-- 		http://mybatis.org/schema/mybatis-spring-1.2.xsd -->
+<!-- 		http://www.springframework.org/schema/beans  -->
+<!-- 		http://www.springframework.org/schema/beans/spring-beans.xsd -->
+<!-- 		http://www.springframework.org/schema/context  -->
+<!-- 		http://www.springframework.org/schema/context/spring-context-4.3.xsd"> -->
+	
+	
+	<!-- hikariCP : connection-pool -->
+		<!-- 직접 값을 대입... -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName"
+			 value="oracle.jdbc.OracleDriver"></property>
+			 <!-- oracle.jdbc.OracleDriver -->
+			 <!-- net.sf.log4jdbc.sql.jdbcapi.DriverSpy -->
+		<property name="jdbcUrl"
+			 value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="book_ex"></property>
+		<property name="password" value="book_ex"></property>
+	</bean>
+	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+	
+		<!-- 프로퍼티 이용... Deploy 용도...
+		 oracle.jdbc.OracleDriver-->
+	<!-- 
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		 <property name="driverClassName" value="${jdbcHikari.driverClassName}"></property>
+		 <property name="jdbcUrl" value="${jdbcHikari.jdbcUrl}"></property> 
+		 <property name="username" value="${jdbcHikari.username}"></property>
+		 <property name="password" value="${jdbcHikari.password}"></property> 
+	</bean>
+	 --> 
+	 	<!-- 프로퍼티 이용... 개발용도 로그 확인...
+	 	 net.sf.log4jdbc.sql.jdbcapi.DriverSpy-->
+	 <!-- 
+	 <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		 <property name="driverClassName" value="${jdbcHikariLog.driverClassName}"></property>
+		 <property name="jdbcUrl" value="${jdbcHikariLog.jdbcUrl}"></property>
+		 <property name="username" value="${jdbcHikariLog.username}"></property>
+		 <property name="password" value="${jdbcHikariLog.password}"></property
+	 </bean>
+	  -->
+		  
+	<!-- mybatis-spring : sql-mapper -->
+	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dataSource"></property>
+	  	<property name="mapperLocations">
+		 <list>
+			 <value>classpath:com/spring/mappers/MyBoardMapper.xml</value>
+		 </list>
+		 </property> 	
+	 </bean>
+	
+	 <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	 	<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	 </bean>
+	 
+	 <mybatis-spring:scan base-package="com.spring"/>
+	 
+</beans>

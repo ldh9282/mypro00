@@ -1,0 +1,11 @@
+package com.spring.mypro00.mapper;
+
+import com.spring.mypro00.domain.MyMemberVO;
+
+public interface MyMemberMapper {
+	
+	// 회원 조회: 회원 권한도 함께 조회 (스프링 시큐리티 사용)
+	public MyMemberVO selectMyMember(String userid);
+	
+	public Integer insertMyMember(MyMemberVO myMember);
+}
