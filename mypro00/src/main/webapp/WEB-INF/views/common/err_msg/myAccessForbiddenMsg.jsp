@@ -3,7 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%-- MyErrMsgController 에 의한 callAccessForbiddenPage 에 의한 request 받음 --%>
+
 
 <!DOCTYPE html>
 <html>

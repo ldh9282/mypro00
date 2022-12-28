@@ -6,7 +6,7 @@
 	<artifactId>mypro00</artifactId>
 	<name>mypro00</name>
 	<packaging>war</packaging>
-	<version>1.0.0</version>
+	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.2.22.RELEASE</org.springframework-version>

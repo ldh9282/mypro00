@@ -2,14 +2,10 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <c:set var="contextPath" value="${pageContext.request.contextPath }"/>
 
-
-<%-- common/myLogout.jsp --%>
-<%-- MyLoginLogoutController 의 logoutPageGET 메서드에 의한 Requset 받음 --%>
-<%-- http://localhost:8080/mypro00/logout 에 매핑된 스프링 시큐리티에 Response 보냄 --%>    
-<%-- 스프링 시큐리티 구성정보는 WEB/INFspring/security-context.xml 에 저장되어있음 --%>    
+    
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -48,22 +44,20 @@
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default" style="margin-top: 10%;">
-                   <div class="panel-heading">
-                       <h2 class="panel-title">Really Logout ?</h2>
-                   </div>
-                   <div class="panel-body">
-                       <form role="form" method="post" action="${contextPath }/logout">
-                       
-                           <fieldset>
-                               <div>
-                                   <button type="submit" class="btn btn-lg btn-success btn-block">Log
-                                       out</button>
-                               </div>
-                           </fieldset>
-                           
-                           <sec:csrfInput/>
-                       </form>
-									</div>
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Really Logout ?</h2>
+                    </div>
+                    <div class="panel-body"><%-- 
+                        <form role="form" method="post" action="${contextPath }/myLogoutProcess"> --%>
+                        <form role="form" id="frmMyLogout" method="post" action="${contextPath }/logout">
+                        	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+							<fieldset>
+                                <div>
+                                	<button type="button" id="btnMyLogout" class="btn btn-lg btn-success btn-block">Log out</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,27 +74,26 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
-
-
-
+    
 <script type="text/javascript">
 
 var frmMyLogout = $("#frmMyLogout");
 
-$("#btnMyLogout").on("click", function() {
-	var logoutDecision = confirm("로그아웃 하시겠습니까?");
+$("#btnMyLogout").on("click", function(){
+	var logoutDecision = confirm("로그아웃 하시겠습니까?") ;
 	
-	if (!logoutDecision) {
-		alert("로그아웃이 취소하겠습니다");
-		return;
+	if(!logoutDecision){
+		alert("로그아웃이 취소되었습니다.") ;
+		return ;
 	} else {
-		alert("로그아웃 되었습니다")
-		frmMyLogout.submit();
+		frmMyLogout.submit() ;
+		alert("로그아웃 페이지에서 로그아웃 되었습니다.") ;
 	}
-}
+});
 
 </script>
-
+    
+    
 
 </body>
 

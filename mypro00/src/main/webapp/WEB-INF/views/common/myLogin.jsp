@@ -5,10 +5,7 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath }"/>
 
-<%-- common/myLogin.jsp --%>
-<%-- MyLoginLogoutController 의 loginPageGET 메서드에 의한 Requset 받음 --%>
-<%-- http://localhost:8080/mypro00/login 에 매핑된 스프링 시큐리티에 Response 보냄 --%> 
-<%-- 스프링 시큐리티 구성정보는 WEB/INFspring/security-context.xml 에 저장되어있음 --%>
+    
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -43,97 +40,66 @@
 
 <body>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-				<div class="login-panel panel panel-default" style="margin-top: 10%;">
-				
-					<div class="panel-heading">
-						<h2 class="panel-title">Please Sign In</h2>
-					</div>
-					
-					<div class="panel-body">
-						<%-- 
-            <form role="form" method="post" action="${contextPath }/myLoginProcess"> --%>
-						<form role="form" method="post" action="${contextPath }/login">
-							<fieldset>
-							
-								<h6 class="text-muted">
-									<c:out value="${error }" />
-								</h6>
-								
-								<h6 class="text-muted">
-									<c:out value="${logout }" />
-								</h6>
-								
-							</fieldset>
-							
-							<fieldset>
-								<div class="form-group">
-									<input class="form-control" placeholder="아이디를 입력하세요."
-										name="username" id="username" type="text" required autofocus>
-								</div>
-								
-								<div class="form-group">
-									<input class="form-control" placeholder="암호를 입력하세요."
-													name="password" id="password" type="password" required>
-								</div>
-								
-								<div class="checkbox">
-									<label> <input name="remember-me" type="checkbox">자동로그인(Remember Me) </label>
-								</div>
-								
-								<div>
-									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
-								</div>
-								
-								<!-- Change this to a button or input when using this as a form -->
-								<!-- 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default" style="margin-top: 10%;">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Please Sign In</h2>
+                    </div>
+                    <div class="panel-body"><%-- 
+                        <form role="form" method="post" action="${contextPath }/myLoginProcess"> --%>
+                        <form role="form" method="post" action="${contextPath }/login">
+                        	<fieldset>
+                        		<h6 class="text-muted"><c:out value="${error }"/></h6>
+                        		<h6 class="text-muted"><c:out value="${logout }"/></h6>
+                        	</fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="아이디를 입력하세요." 
+                                           name="username" id="username" type="text" required autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="암호를 입력하세요." 
+                                           name="password" id="password" type="password" required>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember-me" type="checkbox" >자동로그인(Remember Me)
+                                    </label>
+                                </div>
+                                <div>
+                                	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }"/>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form --><!-- 
                                 <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a> -->
-								<div>
-									<button type="submit" class="btn btn-lg btn-success btn-block">Sign in</button>
-								</div>
-								
-							</fieldset>
-							
-							<fieldset>
-								<hr>
-								
-								<h6 class="text-muted text-center">
-									<c:out value="${normal }" />
-								</h6>
-								
-							</fieldset>
-							
-						</form>
-					</div>
-					
-				</div><!-- login-panel -->
-			</div><!-- col-md-4 -->
-		</div><!-- row -->
-	</div><!-- container -->
+                                <div>
+                                	<button type="submit" class="btn btn-lg btn-success btn-block">Sign in</button>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                            	<hr>
+                            	<h6 class="text-muted text-center"><c:out value="${normal }"/></h6>
+                            
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
+    <!-- Bootstrap Core JavaScript -->
+    <script src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
 
-
-
-
-
-
-
-
-	<!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-  <!-- Bootstrap Core JavaScript -->
-  <script src="${contextPath}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-  <!-- Metis Menu Plugin JavaScript -->
-  <script src="${contextPath}/resources/vendor/metisMenu/metisMenu.min.js"></script>
-
-  <!-- Custom Theme JavaScript -->
-  <script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="${contextPath}/resources/dist/js/sb-admin-2.js"></script>
 
 </body>
 

@@ -1,7 +1,0 @@
-package com.spring.mypro00.common.security;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-public class MyMemberDetailsService implements UserDetailsService {
-
-}

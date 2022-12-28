@@ -3,108 +3,99 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <c:set var="contextPath" value="<%=request.getContextPath() %>" />
 
 <%@ include file="../myinclude/myheader.jsp" %>
 
-
 <div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">Board - Modify</h3>
+        </div><%-- /.col-lg-12 --%>
+    </div><%-- /.row --%>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>게시물 수정-삭제</h4></div><%-- /.panel-heading --%>
+                <div class="panel-body">
 
-	<div class="row">
-		<div class="col-lg-12">
-			<h3 class="page-header">Board - Modify</h3>
-		</div><%-- /.col-lg-12 --%>
-	</div><%-- /.row --%>
+<form role="form" method="post" name="frmBoard" id="frmModify">
+	<div class="form-group">
+	    <label>글번호</label><input class="form-control" name="bno" value='<c:out value="${board.bno }"/>' 
+	    						   readonly="readonly" />
+	</div>
+	<div class="form-group">
+	    <label>글제목</label><input class="form-control" name="btitle" value='<c:out value="${board.btitle }"/>'
+	                             /> 
+	</div>
+
+
+	<div class="form-group">
+		<label>글내용</label>	<%-- <textarea>와 </textarea>는 사이에 공백이 없어야
+								  데이터베이스 저장 시에 필요 없는 공백이 포함되지 않음 --%>
+		<textarea class="form-control" rows="3" name="bcontent"
+				  ><c:out value="${board.bcontent}"/></textarea>
+	</div>
+
+	<div class="form-group">
+		<label>작성자</label>
+		<input class="form-control" name="bwriter" value='<c:out value="${board.bwriter}"/>'
+			   readonly="readonly"/>
+	</div>
 	
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-			
-				<div class="panel-heading">
-					<h4>게시물 수정-삭제</h4>
-				</div><%-- /.panel-heading --%>
-				
-				<div class="panel-body">
+	<div class="form-group">
+		<label>최종수정일</label> [등록일시: <fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss"
+											 			value="${board.bregDate}"/>]
+		<input class="form-control" name="bmodDate"
+			   value='<fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss" value="${board.bmodDate}"/>'
+			   disabled="disabled" />
+	</div><%-- 
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="principal"/>
 
-				<form role="form" method="post" name="frmBoard" id="frmModify">
-					<div class="form-group">
-						<label>글번호</label><input class="form-control" name="bno" value='<c:out value="${board.bno }"/>'
-							readonly="readonly" />
-					</div>
-					<div class="form-group">
-						<label>글제목</label><input class="form-control" name="btitle"
-							value='<c:out value="${board.btitle }"/>' />
-					</div>
+		<c:if test="${principal.username == board.bwriter }"> --%>
+	<button type="button" class="btn btn-default btnBoard" id="btnModify" data-oper="modify">수정</button>
+	<button type="button" class="btn btn-danger btnBoard" id="btnRemove" data-oper="remove">삭제</button><%-- 
+		</c:if>
 
+</sec:authorize>	 --%>
+	
+	<button type="button" class="btn btn-info btnBoard" id="btnList" data-oper="list">취소</button>
+	
+	<input type="hidden" name="pageNum" value="${myBoardPagingDTO.pageNum }"/>
+	<input type="hidden" name="rowAmountPerPage" value="${myBoardPagingDTO.rowAmountPerPage }"/>
+	<input type="hidden" name="scope" value="${myBoardPagingDTO.scope }"/>
+	<input type="hidden" name="keyword" value="${myBoardPagingDTO.keyword }"/>
+	
+	<sec:csrfInput/>
+</form>
+                    
+                </div><%-- /.panel-body --%>
+            </div><%-- /.panel --%>
+        </div><%-- /.col-lg-12 --%>
+    </div><%-- /.row --%>
 
-					<div class="form-group">
-						<label>글내용</label> <%-- <textarea>와 </textarea>는 사이에 공백이 없어야
-							데이터베이스 저장 시에 필요 없는 공백이 포함되지 않음 --%>
-							<textarea class="form-control" rows="3"
-								name="bcontent"><c:out value="${board.bcontent}"/></textarea>
-					</div>
-
-					<div class="form-group">
-						<label>작성자</label>
-						<input class="form-control" name="bwriter" value='<c:out value="${board.bwriter}"/>'
-							readonly="readonly" />
-					</div>
-
-					<div class="form-group">
-						<label>최종수정일</label> [등록일시:
-						<fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss" value="${board.bregDate}" />]
-						<input class="form-control" name="bmodDate"
-							value='<fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss" value="${board.bmodDate}"/>'
-							disabled="disabled" />
-					</div>
-					<sec:authorize access="isAuthenticated()"><%-- 추가: 로그인 유무 확인 --%>
-							<sec:authentication property="principal" var="principal" /><%-- 추가: 로그인 계정 변수화 --%>
-								<c:if test="${principal.username eq board.bwriter}"><%-- 추가: 로그인 계정과 작성자 비교 --%>
-										<button type="button" id="btnModify" data-oper="modify"
-											class="btn btn-default btn-frmModify btnBoard">수정
-										</button>
-										<button type="button" id="btnRemove" data-oper="remove"
-											class="btn btn-danger btn-frmModify btnBoard">삭제
-										</button>
-								</c:if><%-- 추가 --%>
-					</sec:authorize><%-- 추가 --%>
-					<button type="button" class="btn btn-info btnBoard" id="btnList" data-oper="list">취소</button>
-
-					<input type="hidden" name="pageNum" value="${myBoardPagingDTO.pageNum }" />
-					<input type="hidden" name="rowAmountPerPage" value="${myBoardPagingDTO.rowAmountPerPage }" />
-					<input type="hidden" name="scope" value="${myBoardPagingDTO.scope }" />
-					<input type="hidden" name="keyword" value="${myBoardPagingDTO.keyword }" />
-					<sec:csrfInput />
-				</form>
-
-				</div><%-- /.panel-body --%>
-			</div><%-- /.panel --%>
-		</div><%-- /.col-lg-12 --%>
-	</div><%-- /.row --%>
-
-	<%-- 첨부파일 표시 영역 --%>
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="panel panel-default">
-			
-				<div class="panel-heading">첨부 파일</div>
-				
-				<div class="panel-body">
-					<div class="form-group uploadDiv">
-						<input id="inputFile" type="file" name="uploadFiles" multiple><br>
-					</div>
-					
-					<div class="form-group fileUploadResult">
-						<ul>
-							<%-- 업로드 후, 업로드 처리결과가 표시될 영역 --%>
-						</ul>
-					</div>
-				</div><%-- /.panel-body --%>
-				
-			</div><%-- /.panel --%>
-		</div><%-- /.col-lg-12 --%>
-	</div><%-- /.row --%>
+<%-- 첨부파일 표시 영역 --%>   
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">첨부 파일</div>
+			<div class="panel-body">
+				<div class="form-group uploadDiv">
+					<input id="inputFile" type="file" name="uploadFiles" multiple><br>
+				</div>
+				<div class="form-group fileUploadResult">
+					<ul>
+					<%-- 업로드 후, 업로드 처리결과가 표시될 영역 --%>
+					</ul>
+				</div>
+			</div><%-- /.panel-body --%>
+		</div><%-- /.panel --%>
+	</div><%-- /.col-lg-12 --%>
+</div><%-- /.row --%>
 
 
 
@@ -112,9 +103,8 @@
 
 </div><%-- /#page-wrapper --%>
 
-
-
 <script>
+
 
 
 var bnoValue = '<c:out value="${board.bno}" />' ;
@@ -123,86 +113,82 @@ var bnoValue = '<c:out value="${board.bno}" />' ;
 //기존 내용 삭제 후, 아래의 내용 추가 작성(오타, 대소문자 주의!!!)
 //form의 수정/삭제/목록보기 버튼 클릭 에벤트 처리
 var frmModify = $("#frmModify");
-var loginUser = '<sec:authentication property="principal.username"/>';
 
+var loginUser = "" ;
 <sec:authorize access="isAuthenticated()">
-	loginUser = '<sec:authentication property="principal.username"/>';
+	loginUser = '<sec:authentication property="principal.username"/>' ;
 </sec:authorize>
-
-var csrfHeaderName = "${_csrf.headerName}";
-var csrfTokenValue = "${_csrf.token}";
-
-
-$(document).ajaxSend(function(e, xhr, options){ 
-	xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
-});
-
 
 $('.btnBoard').on("click", function(e){
 	//e.preventDefault(); //버튼 유형이 submit가 아니므로 설정할 필요 없음
 	var operation = $(this).data("oper"); //각 버튼의 data-xxx 속성에 설정된 값을 저장
 	//alert("operation: "+ operation);
 	
-	var bwriterVal = '<c:out value="${board.bwriter}" />';
-	alert("operation: " + operation + ", bwriterVal: " + bwriterVal)
-
-
+	var bwriter = '<c:out value="${board.bwriter}"/>';
+	
+	if(operation == "list"){ //게시물 목록 화면 요청
+		var pageNumInput = $("input[name='pageNum']").clone() ;
+	    var rowAmountPerPageInput = $("input[name='rowAmountPerPage']").clone() ;
+	    var scopeInput = $("input[name='scope']").clone() ;
+	    var keywordInput = $("input[name='keyword']").clone() ;
+	    
+	    frmModify.empty();
+	    
+		frmModify.attr("action","${contextPath}/myboard/list").attr("method","get");
+		
+		frmModify.append(pageNumInput);
+		frmModify.append(rowAmountPerPageInput) ;
+		frmModify.append(scopeInput) ;
+		frmModify.append(keywordInput) ;
+		
+	} else {
+		
+	/* 	if(!loginUser || loginUser != bwriter) {
+			alert("로그인 한 작성자만 게시물의 수정 삭제가 가능합니다.");
+			return ;
+		} */
+		
 		if(operation == "modify"){ //게시물 수정 요청
-			if (!loginUser) {
-				alert("로그인 후 수정이 가능합니다");
-				return;
-			}
-			if (loginUser != bwriterVal) {
-				alert("작성자만 수정이 가능합니다")
-			}
+
 			var strInputHidden = "" ;
 				
 			//업로드 결과의 li 요소 각각에 대하여 다음을 처리(이벤트 위임 이용)
 			$(".fileUploadResult ul li").each(function(i, obj) {
-		
+			
 				var objLi =$(obj) ;
 				
 				strInputHidden += "<input type='hidden' name='attachFileList[" + i + "].uuid' value='" + objLi.data("uuid") + "' > "
-											+  "<input type='hidden' name='attachFileList[" + i + "].uploadPath' value='" + objLi.data("uploadpath") + "' > "
-											+  "<input type='hidden' name='attachFileList[" + i + "].fileName' value='" + objLi.data("filename") + "' > "
-											+  "<input type='hidden' name='attachFileList[" + i + "].fileType' value='" + objLi.data("filetype") + "' > "
-											+  "<input type='hidden' name='attachFileList[" + i + "].repoPath' value='" + objLi.data("repopath") + "' > " ;
-		});
-			frmModify.append(strInputHidden) ;
-			frmModify.attr("action", "${contextPath}/myboard/modify");
-	
-		} else if(operation == "remove"){ //게시물 삭제 요청
-				if (!loginUser) {
-					alert("로그인 후 삭제가 가능합니다");
-					return;
-				}
-				if (loginUser != bwriterVal) {
-					alert("작성자만 수정이 가능합니다")
-				}
+				               +  "<input type='hidden' name='attachFileList[" + i + "].uploadPath' value='" + objLi.data("uploadpath") + "' > "
+				               +  "<input type='hidden' name='attachFileList[" + i + "].fileName' value='" + objLi.data("filename") + "' > "
+				               +  "<input type='hidden' name='attachFileList[" + i + "].fileType' value='" + objLi.data("filetype") + "' > "
+				               +  "<input type='hidden' name='attachFileList[" + i + "].repoPath' value='" + objLi.data("repopath") + "' > " ;
+			});
+				
+				frmModify.append(strInputHidden) ;
+				frmModify.attr("action", "${contextPath}/myboard/modify");
+
+		} else if (operation == "remove"){ //게시물 삭제 요청
 			frmModify.attr("action", "${contextPath}/myboard/delete");
 			//frmModify.attr("action", "${contextPath}/myboard/remove");
-	
-		} else if (operation == "list"){ //게시물 목록 화면 요청
-			var pageNumInput = $("input[name='pageNum']").clone() ;
-			var rowAmountPerPageInput = $("input[name='rowAmountPerPage']").clone() ;
-			var scopeInput = $("input[name='scope']").clone() ;
-			var keywordInput = $("input[name='keyword']").clone() ;
-			   
-			   
-	    frmModify.empty();
-			frmModify.attr("action","${contextPath}/myboard/list").attr("method","get");
-			
-			frmModify.append(pageNumInput);
-			frmModify.append(rowAmountPerPageInput) ;
-			frmModify.append(scopeInput) ;
-			frmModify.append(keywordInput) ;
-		
-	}
 
+		}
+	}
+	
 	frmModify.submit() ; //요청 전송
 });
 
+
 //첨부파일 처리 시작
+
+var csrfHeaderName = "${_csrf.headerName}" ;
+var csrfToken = "${_csrf.token}" ;
+
+$(document).ajaxSend(function(e, xhr, options){
+	xhr.setRequestHeader(csrfHeaderName, csrfToken) ;
+	
+});
+
+
 //input 초기화를 위해 div 요소의 비어있는 input 요소를 복사해서 저장함.
 var cloneInputFile = $(".uploadDiv").clone() ;
 
@@ -370,6 +356,7 @@ $(document).ready(function(){
 });
 
 </script>
+
 <%@ include file="../myinclude/myfooter.jsp" %>
         
         

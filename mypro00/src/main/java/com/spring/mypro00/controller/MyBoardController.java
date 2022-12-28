@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,24 +22,21 @@ import com.spring.mypro00.common.paging.MyBoardPagingCreatorDTO;
 import com.spring.mypro00.common.paging.MyBoardPagingDTO;
 import com.spring.mypro00.domain.MyBoardAttachFileVO;
 import com.spring.mypro00.domain.MyBoardVO;
+import com.spring.mypro00.service.MyBoardDAOService;
 import com.spring.mypro00.service.MyBoardService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
+@AllArgsConstructor // myBoardService 필드에 서비스 객체를 주입하기 위해 사용됨
 @RequestMapping(value="/myboard/*")
 @Log4j
 public class MyBoardController {
 	
 	public MyBoardService myBoardService ;
 	
-	public MyBoardController(MyBoardService myBoardService) {
-		this.myBoardService = myBoardService;
-	}
-	
-
-
+	public MyBoardDAOService myBoardDAOService ;
 	
 	//빈 주입 방법1: 생성자 주입방법(권장), 단일 생성자만 존재해야 함.
 	//주의: 기본 생성자가 존재 시에 오류 발생
@@ -59,16 +57,16 @@ public class MyBoardController {
 //	        }
 
 	
-
-
 	//목록 조회				GET /myboard/list
-	//requestParam이 없으면 pageNum = 1, rowAmountPerPage = 10 가 디폴트 
 	@GetMapping("/list")
 	public void showBoardList(MyBoardPagingDTO myBoardPagingDTO, Model model ) {
 		
-		model.addAttribute("boardList", myBoardService.getBoardList(myBoardPagingDTO)) ;
+		//model.addAttribute("boardList", myBoardService.getBoardList(myBoardPagingDTO)) ;
 		
-		long rowAmountTotal = myBoardService.getRowAmountTotal(myBoardPagingDTO) ;
+		model.addAttribute("boardList", myBoardDAOService.getBoardListDAO(myBoardPagingDTO)) ;
+		
+		//long rowAmountTotal = myBoardService.getRowAmountTotal(myBoardPagingDTO) ;
+		long rowAmountTotal = myBoardDAOService.getRowAmtTotalDAO(myBoardPagingDTO) ;
 		
 		MyBoardPagingCreatorDTO myBoardPagingCreatorDTO 
 					= new MyBoardPagingCreatorDTO(rowAmountTotal, myBoardPagingDTO) ;
@@ -132,7 +130,7 @@ public class MyBoardController {
 	
 	
 	
-	
+	//@PreAuthorize("isAuthenticated() && principal.username == #bwriter"): detail.jsp의 수정버튼 클릭 이벤트 화면으로부터 bwriter 값을 받아서, 매개변수에 저장하도록 수정
 	//수정 페이지 호출		GET /myboard/register
 	@GetMapping("/modify")
 	public void showBoardModify(Long bno, @ModelAttribute("myBoardPagingDTO") MyBoardPagingDTO myBoardPagingDTO, Model model) {
@@ -154,13 +152,11 @@ public class MyBoardController {
 		return "/myboard/detail" ;
 	}
 	
-	
-	//특정 게시물 수정		POST /myboard/modify
 	@PreAuthorize("isAuthenticated() && principal.username == #myBoard.bwriter")
+	//특정 게시물 수정		POST /myboard/modify
 	@PostMapping("/modify")
-	public String modifyBoard(MyBoardVO myBoard,
-			                  MyBoardPagingDTO myBoardPagingDTO,
-			                  RedirectAttributes redirectAttr) {
+	public String modifyBoard(MyBoardVO myBoard, RedirectAttributes redirectAttr,
+			                  MyBoardPagingDTO myBoardPagingDTO) {
 		
 		if(myBoardService.modifyBoard(myBoard)) {
 			redirectAttr.addFlashAttribute("result", "successModify") ;
@@ -169,15 +165,16 @@ public class MyBoardController {
 		//return "redirect:/myboard/detail?bno=" + myBoard.getBno() ;
 		
 		redirectAttr.addAttribute("bno", myBoard.getBno()) ;
-		redirectAttr.addAttribute("pageNum", myBoardPagingDTO.getPageNum());
-		redirectAttr.addAttribute("rowAmountPerPage", myBoardPagingDTO.getRowAmountPerPage()) ;
-		redirectAttr.addAttribute("scope", myBoardPagingDTO.getScope()) ;
-		redirectAttr.addAttribute("keyword", myBoardPagingDTO.getKeyword()) ;
-		return "redirect:/myboard/detailmod" ;
+//		redirectAttr.addAttribute("pageNum", myBoardPagingDTO.getPageNum());
+//		redirectAttr.addAttribute("rowAmountPerPage", myBoardPagingDTO.getRowAmountPerPage()) ;
+//		redirectAttr.addAttribute("scope", myBoardPagingDTO.getScope()) ;
+//		redirectAttr.addAttribute("keyword", myBoardPagingDTO.getKeyword()) ;
+//		return "redirect:/myboard/detailmod" ;
+		return "redirect:/myboard/detailmod"  + myBoardPagingDTO.addPagingParamsToURI();
 	}
 	
+	@PreAuthorize("isAuthenticated() && principal.username == #bwriter")
 	//특정 게시물 삭제		POST /myboard/remove
-//	@PreAuthorize("isAuthenticated() && principal.username == #bwriter")
 	@PostMapping("/remove")
 	public String removeBoard(Long bno, String bwriter, RedirectAttributes redirectAttr, MyBoardPagingDTO myBoardPagingDTO) {
 
@@ -203,11 +200,17 @@ public class MyBoardController {
 	}
 
 
+	//@PreAuthorize("principal.username == #bwriter")
+	@PreAuthorize("isAuthenticated() && principal.username == #bwriter")
 	//특정 게시물 삭제의뢰		POST /myboard/delete
 	@PostMapping("/delete")
-	@PreAuthorize("isAuthenticated() && principal.username == #bwriter")
-	public String deleteBoard(Long bno, String bwriter, RedirectAttributes redirectAttr, MyBoardPagingDTO myBoardPagingDTO) {
+	public String deleteBoard(@RequestParam("bno") Long bno, 
+							  String bwriter,
+							  //@RequestParam("bwriter") String bwriter, 
+							  RedirectAttributes redirectAttr, 
+							  MyBoardPagingDTO myBoardPagingDTO) {
 		
+		System.out.println("bwriter: " + bwriter);
 		
 		//첨부파일 정보가 저장된 리스트 객체 생성
 		List<MyBoardAttachFileVO> attatchFileList = myBoardService.getAttachFiles(bno) ;

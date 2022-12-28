@@ -3,7 +3,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="contextPath" value="<%=request.getContextPath() %>" />
 
@@ -113,30 +114,48 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-user fa-fw"></i>
-                        	
                         <sec:authorize access="isAuthenticated()">
-													<sec:authentication property="principal.username"/><span>님 접속</span>
-												</sec:authorize>
-												
-												<sec:authorize access="isAnonymous()">
-													<span>로그인해주세요</span>
-												</sec:authorize>
+                        	<sec:authentication property="principal.username"/><span>님 접속</span>
+                        </sec:authorize>
+                        
+                        <sec:authorize access="isAnonymous()">
+                        	<span>로그인</span>
+                        </sec:authorize>
+                         
                         <i class="fa fa-caret-down"></i>
                     </a>
-										<ul class="dropdown-menu">
-											<sec:authorize access="isAuthenticated()">
-												<li>
-													<a id="myLogout" href="${contextPath}/logout"><i class="fa fa-sign-out fa-fw"></i> Sign out</a>
-												</li>
-											</sec:authorize>
-											
-											<sec:authorize access="isAnonymous()">
-												<li>
-													<a id="myLogin" href="${contextPath}/login"><i class="fa fa-sign-in fa-fw"></i> Sign in</a>
-												</li>
-											</sec:authorize>
-										</ul>
-                    
+                    <ul class="dropdown-menu"><%-- 
+                        <li>
+                        	<a id="myLogin" href="${contextPath }/login">
+                        		<i class="fa fa-sign-in fa-fw"></i> Sign in
+                        	</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                        	<a id="myLogout" href="${contextPath }/logout">
+                        		<i class="fa fa-sign-out fa-fw"></i> Logout
+                        	</a>
+                        </li> --%>
+                        
+                        <sec:authorize access="isAuthenticated()">
+                        	<li>
+	                        	<a id="myLogout" href="${contextPath }/logout">
+	                        		<i class="fa fa-sign-out fa-fw"></i> Logout
+	                        	</a>
+                        	</li>
+                        </sec:authorize>
+                        <sec:authorize access="isAnonymous()">
+                        	<li>
+	                        	<a id="myLogin" href="${contextPath }/login">
+	                        		<i class="fa fa-sign-in fa-fw"></i> Login
+	                        	</a>
+                        	</li>
+                        
+                        </sec:authorize>
+                        
+                        
+                        
+                    </ul>
                     <!-- /.dropdown-user -->
                 </li>
                 <!-- /.dropdown -->

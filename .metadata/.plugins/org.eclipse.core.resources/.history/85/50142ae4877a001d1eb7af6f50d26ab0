@@ -1,8 +1,0 @@
-package com.spring.mypro00.mapper;
-
-import com.spring.mypro00.domain.MyMemberVO;
-
-public interface MyMemberMapper {
-
-	public MyMemberVO selectMyMember(String userid);
-}

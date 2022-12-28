@@ -158,16 +158,18 @@ var myCommentClsr = (function(){
 		var rno = comment.rno ;
 		var rwriter = comment.rwriter ;
 		
-		console.log("removeCmtReply() 전달받은 bno: " + bno);
-		console.log("removeCmtReply() 전달받은 rno: " + rno);
-		console.log("removeCmtReply() 전달받은 rwrier: " + rwriter);
-		console.log("removeCmtReply() 함수의 댓글 삭제 ajax 처리 시작.......");
+		//console.log("removeCmtReply() 전달받은 bno: " + bno);
+		//console.log("removeCmtReply() 전달받은 rno: " + rno);
+		//console.log("removeCmtReply() 전달받은 rwrier: " + rwriter);
+		//console.log("removeCmtReply() 함수의 댓글 삭제 ajax 처리 시작.......");
 		
 		$.ajax({
 			type: "delete" ,
 			url: "/mypro00/replies/" + bno + "/" + rno ,
 			data: JSON.stringify({bno: bno, rno: rno, rwriter: rwriter}) ,
 			contentType: "application/json; charset=utf-8" ,
+			//data: rwriter,
+			//contentType: "text/plain; charset=utf-8" ,
 			success: function(removeResult) {
 						if(callback) {
 							callback(removeResult) ;

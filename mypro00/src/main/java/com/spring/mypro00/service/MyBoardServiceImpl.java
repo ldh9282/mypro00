@@ -110,7 +110,7 @@ public class MyBoardServiceImpl implements MyBoardService {
 		
 		boolean boardModfyResult = myBoardMapper.updateMyBoard(myBoard) == 1 ;
 		
-		if ( (boardModfyResult && (myBoard != null && myBoard.getAttachFileList().size() > 0))) {
+		if ( (boardModfyResult && myBoard.getAttachFileList() != null)) {
 			myBoardAttachFileMapper.deleteBoardAllAttachFiles(bno);
 			myBoard.getAttachFileList().forEach(
 					

@@ -1,6 +1,0 @@
-eclipse.preferences.version=1
-org.eclipse.jdt.core.classpathVariable.JRE_LIB=C\:/myJava/jdk1.8.0_341/jre/lib/rt.jar
-org.eclipse.jdt.core.classpathVariable.JRE_SRC=C\:/myJava/jdk1.8.0_341/src.zip
-org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
-org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
-org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled

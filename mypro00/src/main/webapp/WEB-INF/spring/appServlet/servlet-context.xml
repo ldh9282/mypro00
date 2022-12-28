@@ -33,15 +33,18 @@
 	<!-- 
 	<context:component-scan base-package="com.spring.mypro00" /> -->
 	
-	<context:component-scan base-package="com.spring.mypro00.service"/>
 	<context:component-scan base-package="com.spring.mypro00.controller"/>
 	<context:component-scan base-package="com.spring.mypro00.service" />
+	
+	<context:component-scan base-package="com.spring.mypro00.repository_dao"/>
+	
 	<context:component-scan base-package="com.spring.mypro00.common.fileupload"/>
 	<context:component-scan base-package="com.spring.mypro00.common.filedownload"/>
 	<context:component-scan base-package="com.spring.mypro00.common.security"/>
+	
 	<!-- 
-	<context:component-scan base-package="sample.chap02" /> --><!-- 
-	<context:component-scan base-package="sample.chap04.controller" />
+	<context:component-scan base-package="sample.chap02" /> -->
+	<context:component-scan base-package="sample.chap04.controller" /><!-- 
 	<context:component-scan base-package="sample.chap04.exception" /> -->
 	<context:component-scan base-package="sample.chap18.aop"/>
 	<context:component-scan base-package="sample.chap18.service"/>

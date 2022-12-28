@@ -243,7 +243,7 @@ $(".paginate_button a").on("click", function(e) {
 	e.preventDefault() ;
 	
 	frmSendValue.find("input[name='pageNum']").val($(this).attr("href")) ; 
-	alert("선택된 페이지: " + frmSendValue.find("input[name='pageNum']").val()) ; 
+	//alert("선택된 페이지: " + frmSendValue.find("input[name='pageNum']").val()) ; 
 	frmSendValue.attr("action", "${contextPath}/myboard/list") ;
 	frmSendValue.attr("method", "get") ;
 	frmSendValue.submit() ;

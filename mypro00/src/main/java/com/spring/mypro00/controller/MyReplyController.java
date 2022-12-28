@@ -1,6 +1,6 @@
 package com.spring.mypro00.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.mypro00.common.paging.MyReplyPagingCreatorDTO;
@@ -27,8 +28,9 @@ import lombok.AllArgsConstructor;
 public class MyReplyController {
 	
 	private MyReplyService myReplyService ;
-	//"/mypro00/replies/" + bno + "/page/" + page ,
-	//게시물에 대한 댓글 목록 조회:      			GET /replies/{bno}/page/{page}
+	
+
+	//게시물에 대한 댓글 목록 조회:      			GET /replies/pages/{bno}/{page}
 	@GetMapping( value="/{bno}/page/{page}" ,
 			     produces= {"application/json; charset=utf-8"} )
 	public ResponseEntity<MyReplyPagingCreatorDTO> showReplyList(@PathVariable("bno") long bno, @PathVariable("page") Integer pageNum) {
@@ -47,8 +49,8 @@ public class MyReplyController {
 		return new ResponseEntity<MyReplyPagingCreatorDTO>(replyPagingCreator, HttpStatus.OK) ;
 	}
 	
-	@PreAuthorize("isAuthenticated()") 
 	//게시물에 대한 댓글 등록(rno 반환):       	POST /replies/{bno}/new
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping (value = "/{bno}/new" ,
 			      produces = "text/plain; charset=utf-8",
 			      consumes = "application/json; charset=utf-8")
@@ -60,6 +62,7 @@ public class MyReplyController {
 		return registeredRno != null ? new ResponseEntity<String>("RegisterSuccess", HttpStatus.OK) 
 				                     : new ResponseEntity<String>("RegisterFail", HttpStatus.INTERNAL_SERVER_ERROR); 
 	}
+	
 	
 	@PreAuthorize("isAuthenticated()")
 	//댓글에 대한 답글 등록(rno 반환):  	POST /replies/{bno}/{prno}/new
@@ -88,8 +91,7 @@ public class MyReplyController {
 	}
 	
 	//게시물에 대한 특정 댓글 수정: 				PUT:PATCH /replies/{bno}/{rno}
-	
-	@PreAuthorize("isAuthenticated() && principal.username == #myReply.writer")
+	@PreAuthorize("isAuthenticated() && principal.username == #myReply.rwriter")
 	@RequestMapping(value = "/{bno}/{rno}" , 
 			        method = {RequestMethod.PATCH , RequestMethod.PUT},
 	                consumes = "application/json;charset=utf-8",
@@ -105,13 +107,14 @@ public class MyReplyController {
 				           : new ResponseEntity<String>("ModifyFail", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	
-	@PreAuthorize("isAuthenticated() && principal.username == #myReply.writer")
+	//@PreAuthorize("isAuthenticated() && principal.username == #rwriter")
+	@PreAuthorize("isAuthenticated() && principal.username == #myReply.rwriter")
 	//게시물에 대한 특정 댓글 삭제: 				DELETE: /replies/{bno}/{rno}
 	@DeleteMapping(value = "/{bno}/{rno}", produces = { "text/plain; charset=UTF-8" })
 	public ResponseEntity<String> removeReply(@PathVariable("bno") Long bno,
 											  @PathVariable("rno") Long rno,
-											  @RequestBody String rwriter) {
+											  @RequestBody MyReplyVO myReply) { //VO객체를 명시해야 값이 전달됨 
+											  //@RequestBody String rwriter){   //값 전달이 않됨
 
 		int delCnt = myReplyService.removeReply(bno, rno);
 

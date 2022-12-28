@@ -71,6 +71,7 @@
 				<value>classpath:com/spring/mypro00/mapper/MyReplyMapper.xml</value>
 				<value>classpath:com/spring/mypro00/mapper/MyBoardAttachFileMapper.xml</value>
 				<value>classpath:com/spring/mypro00/mapper/MyMemberMapper.xml</value>
+				<value>classpath:com/spring/mypro00/mapper/MyBoardDAOMapper.xml</value>
 			</list>
 		</property>
 	</bean>

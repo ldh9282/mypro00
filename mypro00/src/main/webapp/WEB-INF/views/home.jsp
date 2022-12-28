@@ -10,8 +10,6 @@
 <%@ include file="./myinclude/myheader.jsp" %>
 
 
-
-
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
@@ -23,16 +21,12 @@
 			<h3 class="page-header">
 				<!-- 로그인 하지 않은 경우 -principle: anonymousUser String 객체-->
 				<!-- 로그인 한 경우 -principle: 로그인 사용자의 Authentication 객체 -->
-
-				<sec:authentication property="principal" var="principal" />
+				<sec:authentication property="principal" var="principal"/>
 				<c:choose>
-				
 					<c:when test="${principal eq 'anonymousUser' }">
 						<span>반갑습니다.</span>
 					</c:when>
-					
 					<c:otherwise>
-					
 						<span>${principal.username}님, 반갑습니다.</span>
 						<hr>
 						<span>principal: ${principal}</span>
@@ -41,30 +35,20 @@
 						<hr>
 					</c:otherwise>
 				</c:choose>
-
-
-
 			</h3>
 		</div>
 	</div>
-	<p>
-		현재 시간은, <strong>${serverTime}</strong>입니다
-	</p>
-</div>
-<%-- /.page-wrapper --%>
+	<p> 현재 시간은, <strong>${serverTime}</strong>입니다 </p>
+</div><%-- /.page-wrapper --%>
 
-<c:if test="${param.logout ne null }">
+<c:if test="${param.logout != null}">
 
-	<script type="text/javascript">
-		
-		$(document).ready(funtion() {
-			alert("로그아웃 되었습니다");	
-		});
-	
+	<script>
+	  $(document).ready(function(){
+		 	alert("로그아웃 되었습니다.") ; 
+	  });
 	</script>
 
 </c:if>
-
-
 
 <%@ include file="./myinclude/myfooter.jsp" %>

@@ -6,12 +6,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.log4j.Log4j;
 
 @Getter
 @Setter
 @ToString
-@Log4j
 public class MyBoardPagingDTO {
 	
 	private int pageNum ;
@@ -36,7 +34,7 @@ public class MyBoardPagingDTO {
 									.queryParam("keyword", this.keyword) ;
 		
 		String uriString = uriComponentsBuilder.toUriString() ;
-		log.info("생성된 파라미터 추가 URI 문자열: " + uriString);
+		System.out.println("생성된 파라미터 추가 URI 문자열: " + uriString);
 		return uriString ;
 		
 		//return uriComponentsBuilder.toUriString() ;
@@ -58,8 +56,6 @@ public class MyBoardPagingDTO {
 		}
 		
 		this.rowAmountPerPage = 10 ;
-		
-		
 	}
 
 	public MyBoardPagingDTO(int pageNum, int rowAmountPerPage) {
@@ -78,30 +74,7 @@ public class MyBoardPagingDTO {
 		
 			this.rowAmountPerPage = rowAmountPerPage ;
 		}
-		
 
-
-	}
-	public MyBoardPagingDTO(int pageNum, int rowAmountPerPage, String scope, String keyword) {
-		if(pageNum <= 0) {
-			this.pageNum = 1 ;
-			
-		} else {
-			
-			this.pageNum = pageNum ;
-		}
-		
-		if(rowAmountPerPage <= 0) {
-			this.rowAmountPerPage = 10 ;
-			
-		} else {
-			
-			this.rowAmountPerPage = rowAmountPerPage ;
-		}
-		
-		this.scope = keyword;
-		this.keyword = keyword;
-		
 	}
 	
 	

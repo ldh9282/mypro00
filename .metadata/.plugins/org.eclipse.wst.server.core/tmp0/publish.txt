@@ -1,4 +1,0 @@
-#Tomcat publish data
-#Thu Dec 15 18:13:02 KST 2022
-org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\goott05\\.m2\\repository\\org\\springframework\\spring-web\\5.2.19.RELEASE\\spring-web-5.2.19.RELEASE.jar=WEB-INF/lib/spring-web-5.2.19.RELEASE.jar
-org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\goott05\\.m2\\repository\\org\\springframework\\spring-web\\5.2.22.RELEASE\\spring-web-5.2.22.RELEASE.jar=WEB-INF/lib/spring-web-5.2.22.RELEASE.jar
